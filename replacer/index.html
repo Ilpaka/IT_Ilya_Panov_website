@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Замена слов в файле</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Замена слов в файле</h1>
+
+        <label for="file-input">Выберите файл:</label>
+        <input type="file" id="file-input">
+
+        <label for="search-input">Слово для поиска:</label>
+        <input type="text" id="search-input">
+
+        <label for="replace-input">Слово для замены:</label>
+        <input type="text" id="replace-input">
+
+        <button id="replace-button">Сделать замену</button>
+        <button id="download-button">Скачать новый файл</button>
+
+        <p id="report"></p>
+
+        <label for="before-text">Текст файла до замены:</label>
+        <textarea id="before-text" readonly></textarea>
+
+        <label for="after-text">Текст файла после замены:</label>
+        <textarea id="after-text" readonly></textarea>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>
