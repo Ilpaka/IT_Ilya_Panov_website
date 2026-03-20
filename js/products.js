@@ -69,6 +69,7 @@
 
   let currentFilter = 'all';
   let currentPriceFilter = null;
+  let currentSort = 'default';
 
   function formatPrice(price) {
     return new Intl.NumberFormat('ru-RU').format(price) + ' ₽';
@@ -173,21 +174,31 @@
     });
   }
 
+  function sortProducts(list) {
+    var arr = list.slice();
+    if (currentSort === 'price-asc') {
+      arr.sort(function (a, b) { return a.price - b.price; });
+    } else if (currentSort === 'price-desc') {
+      arr.sort(function (a, b) { return b.price - a.price; });
+    }
+    return arr;
+  }
+
   function renderProducts() {
     var grid = document.getElementById('products-grid');
     if (!grid) return;
     grid.innerHTML = '';
-    var filtered = filterProducts(products);
+    var filtered = sortProducts(filterProducts(products));
     filtered.forEach(function (p) {
       renderProductCard(p, grid);
     });
   }
 
   function initFilters() {
-    document.querySelectorAll('.filter-btn').forEach(function (btn) {
+    document.querySelectorAll('.filter-buttons .filter-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var filter = this.dataset.filter;
-        document.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
+        document.querySelectorAll('.filter-buttons .filter-btn').forEach(function (b) { b.classList.remove('active'); });
         this.classList.add('active');
         if (filter === 'all' || filter === 'bots' || filter === 'sites') {
           currentFilter = filter;
@@ -196,6 +207,19 @@
           currentPriceFilter = filter;
           currentFilter = 'all';
         }
+        renderProducts();
+      });
+    });
+  }
+
+  function initSort() {
+    document.querySelectorAll('.sort-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var sort = this.dataset.sort;
+        if (!sort) return;
+        currentSort = sort;
+        document.querySelectorAll('.sort-btn').forEach(function (b) { b.classList.remove('active'); });
+        this.classList.add('active');
         renderProducts();
       });
     });
@@ -222,6 +246,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     renderProducts();
     initFilters();
+    initSort();
 
     var modal = document.getElementById('product-modal');
     if (modal) {
